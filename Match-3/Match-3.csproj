@@ -55,10 +55,8 @@
     <Compile Include="ScreenManager\Screens\MainMenuScreen.cs" />
     <Compile Include="StageComponents\Actions\ActionsQueue.cs" />
     <Compile Include="StageComponents\Actions\BaseAction.cs" />
-    <Compile Include="StageComponents\Actions\Behaviors\IRefreshable.cs" />
-    <Compile Include="StageComponents\Actions\Behaviors\NoRefresh.cs" />
-    <Compile Include="StageComponents\Actions\Behaviors\Refresh.cs" />
     <Compile Include="StageComponents\Actions\MoveAction.cs" />
+    <Compile Include="StageComponents\Actions\MoveDistanceAction.cs" />
     <Compile Include="StageComponents\Actions\RunableAction.cs" />
     <Compile Include="StageComponents\Actors\Actor.cs" />
     <Compile Include="StageComponents\Actors\AnimatedActor.cs" />

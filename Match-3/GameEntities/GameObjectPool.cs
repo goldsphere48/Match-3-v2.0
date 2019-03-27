@@ -21,11 +21,20 @@ namespace Match_3.GameEntities
         public GameElement Get(ElementColor color, ElementType type, Vector2 position)
         {
             GameElement element = pool.Find(x => !x.Active && x.GameElementType == type);
-            if (element == null)
-                element = GameElementFactory.CreateGameElement(color, type);
-            element.GameElementColor = color;
+            bool exist = element != null;
+            element = GameElementFactory.CreateGameElement(color, type);
+            if (!exist)
+            {
+                pool.Add(element);
+            }
             element.Position = position;
+            element.Active = true;
             return element;
+        }
+
+        public void DeactivateAll()
+        {
+            pool.ForEach(x => x.Active = false);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Match_3.StageComponents.Actions.Behaviors;
-using Match_3.StageComponents.Actors;
+﻿using Match_3.StageComponents.Actors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +9,8 @@ namespace Match_3.StageComponents.Actions
 {
     abstract class BaseAction
     {
-        public Actor Parent;
-        protected IRefreshable refreshableBehavior = new NoRefresh();
-
-        public abstract void Update();
-        public abstract bool IsFinished();
-        public void Refresh()
-        {
-            refreshableBehavior.Refresh();
-        }
+        public abstract void Update(Actor actor);
+        public abstract bool IsFinished(Actor actor);
+        public abstract void Refresh();
     }
 }

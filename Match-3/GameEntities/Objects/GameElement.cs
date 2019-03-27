@@ -18,7 +18,8 @@ namespace Match_3.GameEntities.Objects
             Blue,
             Purple,
             Green,
-            Gold
+            Gold,
+            Empty
         }
 
         public enum ElementType
@@ -35,10 +36,15 @@ namespace Match_3.GameEntities.Objects
         public bool Active
         {
             get => active;
+            set
+            {
+                if (value == false)
+                    GameElementColor = ElementColor.Empty;
+                active = value;
+            }
         }
 
-        public int XIndex;
-        public int YIndex;
+        public Vector2 Index = new Vector2();
 
         public GameElement(string texture) : base(texture, 80, 80, 4f)
         {

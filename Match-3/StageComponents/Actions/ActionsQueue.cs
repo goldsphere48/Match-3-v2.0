@@ -32,7 +32,6 @@ namespace Match_3.StageComponents.Actions
                 currentAction = action;
                 currentActionIndex++;
             }
-            action.Parent = Parent;
             actions.Add(action);
         }
 
@@ -41,13 +40,13 @@ namespace Match_3.StageComponents.Actions
             actions.Clear();
         }
 
-        public override void Update()
+        public override void Update(Actor actor)
         {
             if(currentAction != null)
             {
-                if (!currentAction.IsFinished())
+                if (!currentAction.IsFinished(actor))
                 {
-                    currentAction.Update();
+                    currentAction.Update(actor);
                 }
                 else
                 {
@@ -56,20 +55,20 @@ namespace Match_3.StageComponents.Actions
             }
         }
 
-        public void Start()
-        {
-            currentActionIndex = 0;
-            actions.ForEach(x => x.Refresh());
-        }
-
         public void Stop()
         {
             currentActionIndex = actions.Count;
         }
 
-        public override bool IsFinished()
+        public override bool IsFinished(Actor actor)
         {
             return currentActionIndex == actions.Count;
+        }
+
+        public override void Refresh()
+        {
+            currentActionIndex = 0;
+            actions.ForEach(x => x.Refresh());
         }
     }
 }

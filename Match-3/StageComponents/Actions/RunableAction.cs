@@ -17,16 +17,21 @@ namespace Match_3.StageComponents.Actions
             this.action = action;
         }
 
-        public override bool IsFinished()
+        public override bool IsFinished(Actor actor)
         {
             return done;
         }
 
-        public override void Update()
+        public override void Refresh()
+        {
+            done = false;
+        }
+
+        public override void Update(Actor actor)
         {
             if (!done)
             {
-                action(Parent);
+                action(actor);
                 done = true;
             }
         }

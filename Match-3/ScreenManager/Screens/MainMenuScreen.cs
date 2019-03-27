@@ -26,7 +26,8 @@ namespace Match_3
             stage.AddActor(playButton);
 
             GameElement element = GameElementFactory.CreateGameElement(ElementColor.Blue, ElementType.Regular);
-            element.AddAction(new MoveAction(new Vector2(100, 100), 4));
+            element.AddAction(new MoveDistanceAction(new Vector2(100, 0), 4));
+            element.AddAction(new MoveDistanceAction(new Vector2(100, 0), 4));
             element.AddAction(new RunableAction((self) => {
                 Console.WriteLine("Hello");
             }));

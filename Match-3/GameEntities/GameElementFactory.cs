@@ -14,6 +14,8 @@ namespace Match_3.GameEntities
         {
             string name = color.ToString() + type.ToString();
             GameElement element = new GameElement(name);
+            element.GameElementColor = color;
+            element.GameElementType = type;
             return element;
         }
     }

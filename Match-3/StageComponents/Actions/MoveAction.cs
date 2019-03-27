@@ -1,4 +1,4 @@
-﻿using Match_3.StageComponents.Actions.Behaviors;
+﻿using Match_3.StageComponents.Actors;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,43 +10,44 @@ namespace Match_3.StageComponents.Actions
 {
     class MoveAction : BaseAction
     {
-        private Vector2 target;
-        private Vector2 direction = new Vector2();
-        private float speed;
-        private bool calculated = false;
+        protected Vector2 vector;
+        protected Vector2 direction = new Vector2();
+        protected float speed;
+        protected bool calculated = false;
 
         public MoveAction(Vector2 target, float speed)
         {
-            this.target = target;
+            this.vector = target;
             this.speed = speed;
-
-            refreshableBehavior = new Refresh(() =>
-            {
-                calculated = false;
-            });
         }
 
-        public override bool IsFinished()
+        public override bool IsFinished(Actor actor)
         {
-            return Parent.X == target.X && Parent.Y == target.Y;
+            return calculated && (actor.X == vector.X && actor.Y == vector.Y);
         }
 
-        public override void Update()
+        public override void Refresh()
+        {
+            calculated = false;
+        }
+
+        public override void Update(Actor actor)
         {
             if (!calculated)
             {
-                var angle = Math.Atan2(target.Y - Parent.Y, target.X - Parent.X);
+                var angle = Math.Atan2(vector.Y - actor.Y, vector.X - actor.X);
                 direction.X = (float)Math.Cos(angle);
                 direction.Y = (float)Math.Sin(angle);
                 direction.Normalize();
                 calculated = true;
             }
-            Parent.X += direction.X * speed;
-            Parent.Y += direction.Y * speed;
-            if (Math.Abs(Parent.X - target.X) < speed)
-                Parent.X = target.X;
-            if (Math.Abs(Parent.Y - target.Y) < speed)
-                Parent.Y = target.Y;
+            Console.WriteLine(vector.Y);
+            actor.X += direction.X * speed;
+            actor.Y += direction.Y * speed;
+            if (Math.Abs(actor.X - vector.X) < speed)
+                actor.X = vector.X;
+            if (Math.Abs(actor.Y - vector.Y) < speed)
+                actor.Y = vector.Y;
         }
     }
 }
