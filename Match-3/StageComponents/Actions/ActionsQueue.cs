@@ -55,14 +55,9 @@ namespace Match_3.StageComponents.Actions
             }
         }
 
-        public void Stop()
-        {
-            currentActionIndex = actions.Count;
-        }
-
         public override bool IsFinished(Actor actor)
         {
-            return currentActionIndex == actions.Count;
+            return actions.All(x => x.IsFinished(actor));
         }
 
         public override void Refresh()

@@ -35,5 +35,10 @@ namespace Match_3.StageComponents.Actors
                 childrens.ForEach(x => x.Y += base.Y);
             }
         }
+
+        public bool IsAllChildrensActionsFinished
+        {
+            get => Childrens.All(x => x.IsActionFinished);
+        }
     }
 }

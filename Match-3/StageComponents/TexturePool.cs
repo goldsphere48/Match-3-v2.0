@@ -31,6 +31,14 @@ namespace Match_3.StageComponents
             Load("background");
             Load("gameBackground");
             Load("playButton");
+            Load("Line");
+            Load("Bomb");
+            Load("Purple");
+            Load("Green");
+            Load("Blue");
+            Load("Gold");
+            Load("Brown");
+            Load("Destroyer");
         }
 
         private static Texture2D Load(string name)

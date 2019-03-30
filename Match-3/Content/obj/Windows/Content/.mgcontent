@@ -6,27 +6,33 @@
   <SourceFiles>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/background.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/BlueRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/BombBonus.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/BrownRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/Destroyer.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/Font.spritefont</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/gameBackground.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/gameOver.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/GoldRegular.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/GreenRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/LineBonus.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/okButton.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/playButton.png</File>
     <File>C:/Users/User/Github/Match-3/Match-3/Content/PurpleRegular.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
+    <File>Blue.png</File>
+    <File>Bomb.png</File>
+    <File>Brown.png</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
+    <File>Gold.png</File>
+    <File>Green.png</File>
+    <File>Line.png</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
+    <File>Purple.png</File>
   </DestFiles>
 </SourceFileCollection>

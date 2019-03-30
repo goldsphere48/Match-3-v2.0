@@ -24,14 +24,6 @@ namespace Match_3
             playButton.OnMouseClick = (button, x, y, self) => ScreenManager.SetScreen("Game");
             stage.AddActor(background);
             stage.AddActor(playButton);
-
-            GameElement element = GameElementFactory.CreateGameElement(ElementColor.Blue, ElementType.Regular);
-            element.AddAction(new MoveDistanceAction(new Vector2(100, 0), 4));
-            element.AddAction(new MoveDistanceAction(new Vector2(100, 0), 4));
-            element.AddAction(new RunableAction((self) => {
-                Console.WriteLine("Hello");
-            }));
-            stage.AddActor(element);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

@@ -32,3 +32,13 @@ C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\BrownRegular.
 C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\GoldRegular.xnb
 C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\GreenRegular.xnb
 C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\PurpleRegular.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\BombBonus.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\LineBonus.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Blue.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Bomb.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Brown.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Destroyer.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Gold.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Green.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Line.xnb
+C:\Users\User\Github\Match-3\Match-3\bin\Windows\x86\Debug\Content\Purple.xnb

@@ -10,13 +10,16 @@ namespace Match_3.GameEntities
 {
     static class GameElementFactory
     {
-        public static GameElement CreateGameElement(ElementColor color, ElementType type)
+        public static GameElement CreateGameElementWithParameters(Grid parent, ElementColor color, BonusType type = BonusType.None)
         {
-            string name = color.ToString() + type.ToString();
-            GameElement element = new GameElement(name);
-            element.GameElementColor = color;
-            element.GameElementType = type;
+            var element = new GameElement(color, parent);
+            element.BonusType = type;
             return element;
+        }
+
+        public static GameElement CreateGameElement(Grid parent)
+        {
+            return new GameElement(parent);
         }
     }
 }

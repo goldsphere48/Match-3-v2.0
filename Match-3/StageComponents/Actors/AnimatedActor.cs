@@ -23,12 +23,27 @@ namespace Match_3.StageComponents.Actors
 
         public AnimatedActor(string textureName, int frameWidth, int frameHeight, float animSpeed) : base(textureName)
         {
+            Init(frameWidth, frameHeight, animSpeed);
+        }
+
+        public AnimatedActor(Texture2D texture, int frameWidth, int frameHeight, float animSpeed) : base(texture)
+        {
+            Init(frameWidth, frameHeight, animSpeed);
+        }
+
+        protected void Init(int frameWidth, int frameHeight, float animSpeed)
+        {
             columns = texture.Width / frameWidth;
             rows = texture.Height / frameHeight;
             Width = texture.Width / columns;
             Height = texture.Height / rows;
             this.animSpeed = animSpeed;
             framesCount = rows * columns;
+        }
+
+        protected AnimatedActor()
+        {
+            
         }
 
         //Остановка анимации

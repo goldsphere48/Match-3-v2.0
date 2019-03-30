@@ -14,6 +14,8 @@ namespace Match_3.StageComponents.Actions
         protected Vector2 direction = new Vector2();
         protected float speed;
         protected bool calculated = false;
+        private bool checkX;
+        private bool checkY;
 
         public MoveAction(Vector2 target, float speed)
         {
@@ -23,7 +25,7 @@ namespace Match_3.StageComponents.Actions
 
         public override bool IsFinished(Actor actor)
         {
-            return calculated && (actor.X == vector.X && actor.Y == vector.Y);
+            return calculated && ((actor.X == vector.X && actor.Y == vector.Y) || (checkX && checkY));
         }
 
         public override void Refresh()
@@ -40,10 +42,13 @@ namespace Match_3.StageComponents.Actions
                 direction.Y = (float)Math.Sin(angle);
                 direction.Normalize();
                 calculated = true;
+                checkX = vector.X != actor.X;
+                checkY = vector.Y != actor.Y;
             }
-            Console.WriteLine(vector.Y);
-            actor.X += direction.X * speed;
-            actor.Y += direction.Y * speed;
+            if(checkX)
+                actor.X += direction.X * speed;
+            if(checkY)
+                actor.Y += direction.Y * speed;
             if (Math.Abs(actor.X - vector.X) < speed)
                 actor.X = vector.X;
             if (Math.Abs(actor.Y - vector.Y) < speed)

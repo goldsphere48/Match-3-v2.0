@@ -13,31 +13,43 @@ namespace Match_3.StageComponents.Actors
     {
         public Action<MouseButton, float, float, Actor> OnMouseClick;
         public Color Color = new Color(255, 255, 255);
-        private ActionsQueue actionsQueue = new ActionsQueue();
+        public Stage Stage;
+        private List<BaseAction> actions = new List<BaseAction>();
+
+        protected bool active = true;
+        public virtual bool Active
+        {
+            get => active;
+            set
+            { 
+                active = value;
+            }
+        }
 
         public bool IsActionFinished
         {
-            get => actionsQueue.IsFinished(this);
+            get => currentAction == null;
         }
 
         public void AddAction(BaseAction action)
         {
-            actionsQueue.AddAction(action);
+            actions.Add(action);
         }
 
         public void ClearActions()
         {
-            actionsQueue.ClearActions();
-        }
-
-        public void StopActions()
-        {
-            actionsQueue.Stop();
+            currentActionIndex = 0;
+            actions.Clear();
         }
 
         public void RefreshActions()
         {
-            actionsQueue.Refresh();
+            actions.ForEach(x => x.Refresh());
+        }
+
+        public void AddToParentStage(Actor actor)
+        {
+            Stage.AddActor(actor);
         }
 
         public virtual void Draw(SpriteBatch batch)
@@ -45,9 +57,24 @@ namespace Match_3.StageComponents.Actors
 
         }
 
+        private BaseAction currentAction;
+        private int currentActionIndex = 0;
         public virtual void Update(GameTime gameTime)
         {
-            actionsQueue.Update(this);
+            if(actions.Count > currentActionIndex)
+            {
+                currentAction = actions[currentActionIndex];
+                if (!currentAction.IsFinished(this))
+                {
+                    currentAction.Update(this);
+                }
+                else
+                    currentActionIndex++;
+            }
+            else
+            {
+                currentAction = null;
+            }
         }
     }
 }

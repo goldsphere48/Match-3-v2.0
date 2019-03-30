@@ -42,8 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameContext.cs" />
+    <Compile Include="GameEntities\Enums.cs" />
     <Compile Include="GameEntities\GameElementFactory.cs" />
-    <Compile Include="GameEntities\GameObjectPool.cs" />
+    <Compile Include="GameEntities\Objects\BombBonus.cs" />
+    <Compile Include="GameEntities\Objects\Bonus.cs" />
+    <Compile Include="GameEntities\Objects\Destroyer.cs" />
+    <Compile Include="GameEntities\Objects\LineBonus.cs" />
     <Compile Include="GameEntities\Objects\GameElement.cs" />
     <Compile Include="GameEntities\Objects\Grid.cs" />
     <Compile Include="Main.cs" />
@@ -66,7 +70,7 @@
     <Compile Include="StageComponents\InputListener\MouseButton.cs" />
     <Compile Include="StageComponents\Stage.cs" />
     <Compile Include="StageComponents\TexturePool.cs" />
-    <Compile Include="StageComponents\Transform.cs" />
+    <Compile Include="StageComponents\Actors\Transform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

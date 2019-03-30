@@ -24,6 +24,8 @@ namespace Match_3.StageComponents
             {
                 (actor as Group).Childrens.ForEach(x => AddActor(x));
             }
+            if(actor.Stage == null)
+                actor.Stage = this;
             childrens.Add(actor);
         }
         public void RemoveActor(Actor actor) => childrens.Remove(actor);
@@ -31,7 +33,11 @@ namespace Match_3.StageComponents
         public void Update(GameTime gameTime)
         {
             HandleInput();
-            childrens.ForEach(x => x.Update(gameTime));
+            //childrens.ForEach(x => x.Update(gameTime));
+            for(int i = 0; i < childrens.Count; ++i)
+            {
+                childrens[i].Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch batch)
@@ -44,7 +50,7 @@ namespace Match_3.StageComponents
         public override void OnMouseClick(MouseButton key, float x, float y)
         {
             childrens.ForEach(actor => {
-                if (actor.OnMouseClick != null && actor.IsHit(x, y))
+                if (actor.OnMouseClick != null && actor.Active && actor.IsHit(x, y))
                     actor.OnMouseClick(key, x, y, actor);
             });
         }

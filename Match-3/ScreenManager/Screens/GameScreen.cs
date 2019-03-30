@@ -17,25 +17,28 @@ namespace Match_3
     {
         private Stage stage = new Stage();
         private Grid grid;
+        private Grid grid2;
 
         public void Initialize()
         {
-            grid = new Grid();
-            grid.X = 29;
-            grid.Y = 73;
+            grid2 = new Grid();
+            grid2.X = 29;
+            grid2.Y = 73;
+            stage.AddActor(grid2);
             stage.AddActor(new Image("gameBackground"));
-            stage.AddActor(grid);
-            
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            GameContext.GraphicsDevice.Clear(new Color(255, 202, 85));
             stage.Draw(spriteBatch);
         }
 
         public void Update(GameTime gameTime)
         {
             stage.Update(gameTime);
+            
         }
 
         public void Shutdown()

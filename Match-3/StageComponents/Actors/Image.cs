@@ -19,6 +19,17 @@ namespace Match_3.StageComponents.Actors
             Height = texture.Height;
         }
 
+        public Image(Texture2D texture)
+        {
+            this.texture = texture;
+            Width = texture.Width;
+            Height = texture.Height;
+        }
+
+        protected Image()
+        {
+        }
+
         public override void Draw(SpriteBatch batch)
         {
             batch.Draw(texture, Position, new Rectangle(0, 0, texture.Width, texture.Height), Color, Angle, Origin, 1, SpriteEffects.None, 1);
