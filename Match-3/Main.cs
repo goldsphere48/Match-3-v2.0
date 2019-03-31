@@ -42,6 +42,7 @@ namespace Match_3
 
         protected override void UnloadContent()
         {
+            TexturePool.UnloadContent();
         }
 
         protected override void Update(GameTime gameTime)

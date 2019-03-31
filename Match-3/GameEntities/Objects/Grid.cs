@@ -386,6 +386,10 @@ namespace Match_3.GameEntities.Objects
             return false;
         }
 
+        /// <summary>
+        /// Get mathces and spawn new bonuses 
+        /// </summary>
+        /// <returns>List of game elemements which need to destroy</returns>
         private List<GameElement> GetMatches()
         {
             HashSet<GameElement> _matches = new HashSet<GameElement>();

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Match_3.StageComponents
 {
+    /// <summary>
+    /// Stage is a container for actors which draw, update and provide user input to them
+    /// </summary>
     class Stage : InputListener
     {
         private List<Actor> childrens = new List<Actor>();

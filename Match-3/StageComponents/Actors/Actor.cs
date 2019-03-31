@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Match_3.StageComponents.Actors
 {
+    /// <summary>
+    /// Actor is all what exist on the screen
+    /// </summary>
     class Actor : Transform
     {
         public Action<MouseButton, float, float, Actor> OnMouseClick;
