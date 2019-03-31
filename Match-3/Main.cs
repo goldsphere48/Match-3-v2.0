@@ -13,8 +13,8 @@ namespace Match_3
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 692;
-            graphics.PreferredBackBufferHeight = 734;
+            graphics.PreferredBackBufferWidth = 708;
+            graphics.PreferredBackBufferHeight = 750;
             Content.RootDirectory = "Content";
         }
 
@@ -36,6 +36,7 @@ namespace Match_3
 
             ScreenManager.AddScreen("Menu", new MainMenuScreen());
             ScreenManager.AddScreen("Game", new GameScreen());
+            ScreenManager.AddScreen("GameOver", new GameOverScreen());
             ScreenManager.SetScreen("Menu");
         }
 

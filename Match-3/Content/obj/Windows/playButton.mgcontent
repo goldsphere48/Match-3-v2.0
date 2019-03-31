@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/playButton.png</SourceFile>
-  <SourceTime>2017-05-23T13:50:16.7591018+03:00</SourceTime>
-  <DestFile>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/bin/Windows/playButton.xnb</DestFile>
-  <DestTime>2017-05-23T13:51:03.1132418+03:00</DestTime>
+  <SourceFile>C:/Users/User/Github/Match-3/Match-3/Content/playButton.png</SourceFile>
+  <SourceTime>2019-03-31T22:48:05.6501941+10:00</SourceTime>
+  <DestFile>C:/Users/User/Github/Match-3/Match-3/Content/bin/Windows/playButton.xnb</DestFile>
+  <DestTime>2019-03-31T23:27:44.3761414+10:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-03-01T18:05:36+03:00</ImporterTime>
+  <ImporterTime>2018-12-09T02:35:54+10:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-03-01T18:05:36+03:00</ProcessorTime>
+  <ProcessorTime>2018-12-09T02:35:54+10:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

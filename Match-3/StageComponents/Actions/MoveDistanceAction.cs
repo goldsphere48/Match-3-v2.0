@@ -12,8 +12,8 @@ namespace Match_3.StageComponents.Actions
     {
         private Vector2 startPosition;
         private bool isNeedAccuracy = true;
-        private bool checkX = false;
-        private bool checkY = false;
+        private bool xChecked = false;
+        private bool yChecked = false;
 
         public MoveDistanceAction(Vector2 distance, float speed, bool isNeedAccuracy = true) : base(distance, speed)
         {
@@ -22,9 +22,10 @@ namespace Match_3.StageComponents.Actions
 
         public override bool IsFinished(Actor actor)
         {
-            return calculated && ((startPosition.X + vector.X == actor.X && startPosition.Y + vector.Y == actor.Y) || (checkX && checkY));
+            return calculated && (xChecked && yChecked);
         }
 
+        private Vector2 step;
         public override void Update(Actor actor)
         {
             if (!calculated)
@@ -35,23 +36,25 @@ namespace Match_3.StageComponents.Actions
                 direction.Normalize();
                 calculated = true;
                 startPosition = actor.Position;
+                step = new Vector2(direction.X * speed, direction.Y * speed);
             }
-            actor.X += direction.X * speed;
-            actor.Y += direction.Y * speed;
-            if (Math.Abs(startPosition.X + vector.X - actor.X) < speed)
+           
+            actor.X += step.X;
+            actor.Y += step.Y;
+            if (!xChecked && Math.Abs(startPosition.X + vector.X - actor.X) <= Math.Abs(step.X))
             {
+                xChecked = true;
                 if (!isNeedAccuracy)
                 {
-                    checkX = true;
                     return;
                 }
                 actor.X = startPosition.X + vector.X;
             }
-            if (Math.Abs(startPosition.Y + vector.Y - actor.Y) < speed)
+            else if (!yChecked && Math.Abs(startPosition.Y + vector.Y - actor.Y) <= Math.Abs(step.Y))
             {
+                yChecked = true;
                 if (!isNeedAccuracy)
                 {
-                    checkY = true;
                     return;
                 }
                 actor.Y = startPosition.Y + vector.Y;

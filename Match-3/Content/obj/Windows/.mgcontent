@@ -4,17 +4,37 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/Font.spritefont</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/okButton.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/background.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/playButton.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/gameOver.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/gameBackground.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/staff2.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/staff3.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/staff4.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/staff1.png</File>
-    <File>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/staff5.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/background.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/BlueRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/Bomb.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/BrownRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/Destroyer.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/File.spritefont</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/gameBackground.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/gameOver.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/GoldRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/GreenRegular.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/gridBackground.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/Line.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/okButton.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/playButton.png</File>
+    <File>C:/Users/User/Github/Match-3/Match-3/Content/PurpleRegular.png</File>
   </SourceFiles>
-  <DestFiles />
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File>Blue.png</File>
+    <File xsi:nil="true" />
+    <File>Brown.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>Gold.png</File>
+    <File>Green.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>Purple.png</File>
+  </DestFiles>
 </SourceFileCollection>

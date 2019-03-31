@@ -22,6 +22,8 @@ namespace Match_3
             Image background = new Image("background");
             Image playButton = new Image("playButton");
             playButton.OnMouseClick = (button, x, y, self) => ScreenManager.SetScreen("Game");
+            playButton.X = GameContext.Graphics.PreferredBackBufferWidth / 2 - playButton.Width / 2;
+            playButton.Y = GameContext.Graphics.PreferredBackBufferHeight / 2 - playButton.Height / 2;
             stage.AddActor(background);
             stage.AddActor(playButton);
         }

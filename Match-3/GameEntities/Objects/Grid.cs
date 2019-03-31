@@ -12,16 +12,20 @@ using static Match_3.GameEntities.Objects.GameElement;
 
 namespace Match_3.GameEntities.Objects
 {
-    class Grid : Group
+    class Grid : Group, IDisposable
     {
         public readonly int Rows = 8;
         public readonly int Columns = 8;
+        private readonly int swapSpeed = 6;
+        private readonly int dropSpeed = 10;
+        public readonly int CellSize = 82;
         public List<Destroyer> Destroyers { get; private set; }
+        private List<GameElement> matches = new List<GameElement>();
         private Action<MouseButton, float, float, Actor> elementOnClickAction;
+        public GameState GameState;
         private GameElement[] selectedElements = new GameElement[2];
         private GameElement[,] cells;
-        private GameState gameState;
-        
+
         public GameElement[,] Cells
         {
             get => cells;
@@ -37,7 +41,7 @@ namespace Match_3.GameEntities.Objects
         {
             elementOnClickAction = (button, x, y, self) =>
             {
-                if (button == MouseButton.Left && gameState == GameState.None)
+                if (button == MouseButton.Left && GameState == GameState.None)
                 {
                     var firstSelectedElement = self as GameElement;
                     var secondSelectedElement = GetSelectedElement();
@@ -59,68 +63,64 @@ namespace Match_3.GameEntities.Objects
                 }
             };
 
-            gameState = GameState.None;
+            GameState = GameState.None;
             cells = new GameElement[Columns, Rows];
-
-            /*cells[0, 0] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[0, 1] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Purple);
-            cells[0, 2] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-            cells[0, 3] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[0, 4] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Purple);
-            cells[0, 5] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[0, 6] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[0, 7] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-
-            cells[1, 0] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[1, 1] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[1, 2] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-            cells[1, 3] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Purple);
-            cells[1, 4] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[1, 5] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-
-            cells[1, 6] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-            cells[1, 6].InitBombBonus();
-            cells[1, 7] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Purple);
-            cells[1, 7].InitLineBonus(Orientation.Horizontal);
-
-            cells[2, 0] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Purple);
-            cells[2, 1] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[2, 2] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Gold);
-            cells[2, 3] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Gold);
-            cells[2, 4] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-            cells[2, 5] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);
-            cells[2, 6] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Green);
-            cells[2, 7] = GameElementFactory.CreateGameElementWithParameters(this, ElementColor.Blue);*/
-
             Destroyers = new List<Destroyer>();
 
-            do
+            for (int i = 0; i < Columns; ++i)
             {
-                Console.WriteLine(1);
-                for (int i = 0; i < Columns; ++i)
+                for (int j = 0; j < Rows; ++j)
                 {
-                    for (int j = 0; j < Rows; ++j)
-                    {
-                        cells[i, j] = GameElementFactory.CreateGameElement(this);
-                        cells[i, j].Position = new Vector2(i * 80, j * 80);
-                        cells[i, j].Index = new Vector2(i, j);
-                        cells[i, j].OnMouseClick = elementOnClickAction;
-                    }
+                    cells[i, j] = GameElementFactory.CreateGameElement(this);
+                    cells[i, j].Position = new Vector2(i * CellSize, j * CellSize);
+                    cells[i, j].Index = new Vector2(i, j);
+                    cells[i, j].OnMouseClick = elementOnClickAction;
                 }
-            } while (!IsMoveExist() || IsMatchExist());
+            }
+
+            while (IsMatchExist())
+            {
+                foreach(var cell in cells)
+                {
+                    cell.Randomize();
+                }
+            }
 
             AddAllChildrens();
-            //GenerateGrid();
         }
 
-        public void SetState(GameState state)
+        private void Swap(GameElement first, GameElement second, bool unswap)
         {
-            gameState = state;
+            GameState = GameState.ElementsSwap;
+            first.AddAction(new MoveAction(second.Position, swapSpeed));
+            second.AddAction(new MoveAction(first.Position, swapSpeed));
+            first.AddAction(new RunableAction((self) => {
+
+                SwapElementsInModel(first, second);
+                if (!IsMatchExist() && unswap)
+                {
+                    Swap(first, second, false);
+                }
+                GameState = GameState.ElementsMatch;
+            }));
+
+        }
+
+        private void SwapElementsInModel(GameElement first, GameElement second)
+        {
+            var firstPos = new Vector2(first.Index.X, first.Index.Y);
+            var secondPos = new Vector2(second.Index.X, second.Index.Y);
+
+            cells[(int)firstPos.X, (int)firstPos.Y] = second;
+            cells[(int)secondPos.X, (int)secondPos.Y] = first;
+
+            cells[(int)firstPos.X, (int)firstPos.Y].Index = firstPos;
+            cells[(int)secondPos.X, (int)secondPos.Y].Index = secondPos;
         }
 
         public void SpawnDestroyers(Orientation orientation, Vector2 Index)
         {
-            gameState = GameState.WaitingForDestroyersAnimationEnd;
+            GameState = GameState.WaitingForDestroyersAnimationEnd;
             var first = GetFreeDestroyer();
             var second = GetFreeDestroyer();
             switch (orientation)
@@ -138,77 +138,9 @@ namespace Match_3.GameEntities.Objects
 
         private Destroyer GetFreeDestroyer()
         {
-            Destroyer destroyer;
-            //if(destroyer == null)
-            //{
-                destroyer = new Destroyer(this);
-                Destroyers.Add(destroyer);
-                //AddToParentStage(destroyer);
-            //}
+            Destroyer destroyer = new Destroyer(this);
+            Destroyers.Add(destroyer);
             return destroyer;
-        }
-
-        private List<GameElement> GetEmptyElements()
-        {
-            return Childrens.Select(x => x as GameElement).ToList().FindAll(x => x.ElementColor == ElementColor.Empty);
-        }
-
-        private bool IsMoveExist()
-        {
-            int matchesCount = 1;
-            int mistakes = 0;
-            for (int i = 0; i < Columns - 1; ++i)
-            {
-                for (int j = 0; j < Rows - 1; ++j)
-                {
-                    if (mistakes > 1 && matchesCount < 3)
-                    {
-                        mistakes = 0;
-                        matchesCount = 1;
-                    }
-                    else if (matchesCount >= 3)
-                    {
-                        return true;
-                    }
-                    if (cells[i, j].ElementColor == cells[i, j + 1].ElementColor)
-                    {
-                        matchesCount++;
-                    }
-                    else
-                    {
-                        mistakes++;
-                    }
-                }
-            }
-
-            matchesCount = 1;
-            mistakes = 0;
-
-            for (int i = 0; i < Rows; ++i)
-            {
-                for (int j = 0; j < Columns - 1; ++j)
-                {
-                    if (mistakes > 1 && matchesCount < 3)
-                    {
-                        mistakes = 0;
-                        matchesCount = 1;
-                    }
-                    else if (matchesCount >= 3)
-                    {
-                        return true;
-                    }
-                    if (cells[j, i].ElementColor == cells[j + 1, i].ElementColor)
-                    {
-                        matchesCount++;
-                    }
-                    else
-                    {
-                        mistakes++;
-                    }
-                }
-            }
-
-            return false;
         }
 
         private void RemoveMatches(List<GameElement> _matches)
@@ -218,35 +150,6 @@ namespace Match_3.GameEntities.Objects
             _matches.ForEach(el => el.Active = false);
         }
 
-        private void Swap(GameElement first, GameElement second, bool unswap)
-        {
-            gameState = GameState.ElementsSwap;
-            first.AddAction(new MoveAction(second.Position, 4));
-            second.AddAction(new MoveAction(first.Position, 4));
-            first.AddAction(new RunableAction((self) => {
-
-                SwapElementsInModel(first, second);
-                if (!IsMatchExist() && unswap)
-                {
-                    Swap(first, second, false);
-                }
-                gameState = GameState.ElementsMatch;
-            }));
-            
-        }
-
-        private void SwapElementsInModel(GameElement first, GameElement second)
-        {
-            var firstPos = new Vector2(first.Index.X, first.Index.Y);
-            var secondPos = new Vector2(second.Index.X, second.Index.Y);
-
-            cells[(int)firstPos.X, (int)firstPos.Y] = second;
-            cells[(int)secondPos.X, (int)secondPos.Y] = first;
-
-            cells[(int)firstPos.X, (int)firstPos.Y].Index = firstPos;
-            cells[(int)secondPos.X, (int)secondPos.Y].Index = secondPos;
-        }
-
         private void DropElements(List<GameElement> _matches)
         {
             Childrens.ForEach(x =>
@@ -254,13 +157,13 @@ namespace Match_3.GameEntities.Objects
                 if (!_matches.Contains(x))
                 {
                     var el = x as GameElement;
-                    x.AddAction(new MoveAction(new Vector2(el.Position.X, Y + el.Index.Y * 80), 4));
+                    x.AddAction(new MoveAction(new Vector2(el.Position.X, Y + el.Index.Y * CellSize), dropSpeed));
                 }
             });
 
             _matches.ForEach(x => {
                 var el = x as GameElement;
-                x.AddAction(new MoveAction(new Vector2(el.Position.X, Y + el.Index.Y * 80), 4));
+                x.AddAction(new MoveAction(new Vector2(el.Position.X, Y + el.Index.Y * CellSize), dropSpeed));
             });
         }
 
@@ -270,12 +173,12 @@ namespace Match_3.GameEntities.Objects
 
             elements.ForEach(x => {
                 x.Active = true;
-                x.Y = Y - (elements.Count - x.Index.Y) * 80 - 80;
+                x.Y = Y - (elements.Count - x.Index.Y) * CellSize - CellSize;
             });
 
             var maxY = elements.Max(x => x.Y);
             elements.ForEach(x => {
-                x.Y += Y - maxY - 80;
+                x.Y += Y - maxY - CellSize;
             });
 
             DropElements(elements);
@@ -362,9 +265,9 @@ namespace Match_3.GameEntities.Objects
             return false;
         }
 
-        private List<GameElement> GetVerticalMatches()
+        private List<List<GameElement>> GetVerticalMatches()
         {
-            List<GameElement> horizontalMatches = new List<GameElement>();
+            List<List<GameElement>> verticalMatches = new List<List<GameElement>>();
             int matchesCount = 1;
             for (int i = 0; i < Columns; ++i)
             {
@@ -381,31 +284,31 @@ namespace Match_3.GameEntities.Objects
                     {
                         if (matchesCount >= 3)
                         {
+                            verticalMatches.Add(new List<GameElement>());
                             for (int k = 0; k < matchesCount; ++k)
                             {
-                                horizontalMatches.Add(cells[i, j - k]);
+                                verticalMatches.Last().Add(cells[i, j - k]);
                             }
-                            SpawnBonus(horizontalMatches, matchesCount, Orientation.Vertical);
                         }
                         matchesCount = 1;
                     }
                 }
                 if (matchesCount >= 3)
                 {
+                    verticalMatches.Add(new List<GameElement>());
                     for (int k = 0; k < matchesCount; ++k)
-                        horizontalMatches.Add(cells[i, j - k]);
-                    SpawnBonus(horizontalMatches, matchesCount, Orientation.Vertical);
+                        verticalMatches.Last().Add(cells[i, j - k]);
                 }
                 matchesCount = 1;
 
             }
 
-            return horizontalMatches;
+            return verticalMatches;
         }
 
-        private List<GameElement> GetHorizontalMatches()
+        private List<List<GameElement>> GetHorizontalMatches()
         {
-            List<GameElement> verticalMatches = new List<GameElement>();
+            List<List<GameElement>> horizontalMatches = new List<List<GameElement>>();
             int matchesCount = 1;
             for (int i = 0; i < Rows; ++i)
             {
@@ -422,56 +325,119 @@ namespace Match_3.GameEntities.Objects
                     {
                         if (matchesCount >= 3)
                         {
+                            horizontalMatches.Add(new List<GameElement>());
                             for (int k = 0; k < matchesCount; ++k)
-                                verticalMatches.Add(cells[j - k, i]);
-                            SpawnBonus(verticalMatches, matchesCount, Orientation.Horizontal);
+                                horizontalMatches.Last().Add(cells[j - k, i]);
                         }
                         matchesCount = 1;
                     }
                 }
                 if (matchesCount >= 3)
                 {
+                    horizontalMatches.Add(new List<GameElement>());
                     for (int k = 0; k < matchesCount; ++k)
-                        verticalMatches.Add(cells[j - k, i]);
-                    SpawnBonus(verticalMatches, matchesCount, Orientation.Horizontal);
+                        horizontalMatches.Last().Add(cells[j - k, i]);
                 }
                 matchesCount = 1;
             }
 
-            return verticalMatches;
+            return horizontalMatches;
         }
 
-        private void SpawnBonus(List<GameElement> _matches, int matchesCount, Orientation orientation)
+        public bool TryToSpawnBombOnIntersection(GameElement element)
+        {
+            for(int i = 0; i < 2; ++i)
+            {
+                if(selectedElements[i] != null && selectedElements[i] == element)
+                {
+                    selectedElements[i].InitBombBonus();
+                    selectedElements[i].IsNewBonus = true;
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        public bool TryToSpawnBomb(List<GameElement> elements)
         {
             for (int i = 0; i < 2; ++i)
             {
-                if (selectedElements[i] != null && _matches.Contains(selectedElements[i]))
+                if (selectedElements[i] != null && elements.Contains(selectedElements[i]))
                 {
-                    if (matchesCount == 4)
-                    {
-                        selectedElements[i].InitLineBonus(orientation);
-                        _matches.Remove(selectedElements[i]);
-                    }
-                    else if (matchesCount >= 5)
-                    {
-                        selectedElements[i].InitBombBonus();
-                        _matches.Remove(selectedElements[i]);
-                    }
+                    selectedElements[i].InitBombBonus();
+                    selectedElements[i].IsNewBonus = true;
+                    return true;
                 }
             }
+            return true;
+        }
+
+        public bool TryToSpawnLine(List<GameElement> elements, Orientation orientation)
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                if (selectedElements[i] != null && elements.Contains(selectedElements[i]))
+                {
+                    selectedElements[i].InitLineBonus(orientation);
+                    selectedElements[i].IsNewBonus = true;
+                    return true;
+                }
+            }
+            return false;
         }
 
         private List<GameElement> GetMatches()
         {
-            List<GameElement> _matches = new List<GameElement>();
+            HashSet<GameElement> _matches = new HashSet<GameElement>();
             var horizontalMatches = GetHorizontalMatches();
             var verticalMatches = GetVerticalMatches();
             var intersections = horizontalMatches.FindAll(x => verticalMatches.Contains(x));
-            _matches.AddRange(horizontalMatches);
-            _matches.AddRange(verticalMatches);
-            _matches.RemoveAll(x => intersections.Contains(x));
-            SpawnBonus(intersections, 5, Orientation.Horizontal);
-            return _matches;
+
+            foreach(var horizontalMatch in horizontalMatches)
+            {
+                horizontalMatch.ForEach(x => _matches.Add(x));
+                if(horizontalMatch.Count == 4)
+                {
+                    TryToSpawnLine(horizontalMatch, Orientation.Horizontal);
+                }
+                else if(horizontalMatch.Count == 5)
+                {
+                    TryToSpawnBomb(horizontalMatch);
+                }
+            }
+
+            foreach(var verticalMatch in verticalMatches)
+            {
+                verticalMatch.ForEach(x => _matches.Add(x));
+                if (verticalMatch.Count == 4)
+                {
+                    TryToSpawnLine(verticalMatch, Orientation.Vertical);
+                }
+                else if (verticalMatch.Count == 5)
+                {
+                    TryToSpawnBomb(verticalMatch);
+                }
+            }
+
+            foreach(var horizontalMatch in horizontalMatches)
+            {
+                foreach(var verticalMatch in verticalMatches)
+                {
+                    var intersectionElement = horizontalMatch.Find(x => verticalMatch.Contains(x) && (x.BonusType == BonusType.None || x.IsNewBonus));
+                    if (intersectionElement != null)
+                    {
+                        TryToSpawnBombOnIntersection(intersectionElement);
+                    }
+                }
+            }
+            var matchesList = _matches.ToList();
+            var bonusesToRemoveFromMatchesList = matchesList.FindAll(x => x.IsNewBonus);
+            bonusesToRemoveFromMatchesList.ForEach(x =>
+            {
+                x.IsNewBonus = false;
+                matchesList.Remove(x);
+            });
+            return matchesList;
         }
 
         private float Sqr(float value)
@@ -482,61 +448,37 @@ namespace Match_3.GameEntities.Objects
         private bool CanSwap(GameElement first, GameElement second)
         {
             var r = Math.Sqrt(Sqr(first.Position.X - second.Position.X) + Sqr(first.Position.Y - second.Position.Y));
-            return r == 80;
+            return r == CellSize;
         }
 
         private GameElement GetSelectedElement()
         {
-            for (int i = 0; i < Columns; ++i)
+            foreach(var cell in cells)
             {
-                for (int j = 0; j < Rows; ++j)
-                {
-                    if (cells[i, j].IsAnimated)
-                        return cells[i, j];
-                }
+                if (cell.IsAnimated)
+                    return cell;
             }
-
             return null;
         }
 
         private void AddAllChildrens()
         {
-            for (int i = 0; i < Columns; ++i)
+            foreach (var cell in cells)
             {
-                for (int j = 0; j < Rows; ++j)
-                {
-                    Childrens.Add(cells[i, j]);
-                }
-            }
-        }
-
-        private void Print()
-        {
-            for(int i = 0; i < Columns; ++i)
-            {
-                for(int j = 0; j < Rows; ++j)
-                {
-                    Console.Write(cells[i, j].ElementColor + " ");
-                }
-                Console.WriteLine();
+                Childrens.Add(cell);
             }
         }
 
         private List<GameElement> GetRemovedByBonusesElements()
         {
             HashSet<GameElement> elements = new HashSet<GameElement>();
-            for(int i = 0; i < Columns; ++i)
+            foreach (var cell in cells)
             {
-                for(int j = 0; j < Rows; ++j)
-                {
-                    if(!cells[i, j].Active && !matches.Contains(cells[i, j]))
-                        elements.Add(cells[i, j]);
-                }
+                if (!cell.Active && !matches.Contains(cell))
+                    elements.Add(cell);
             }
             return elements.ToList();
         }
-
-        private List<GameElement> matches = new List<GameElement>();
 
         public override void Update(GameTime gameTime)
         {
@@ -547,8 +489,7 @@ namespace Match_3.GameEntities.Objects
 
             if(IsAllChildrensActionsFinished)
             {
-                Print();
-                switch (gameState)
+                switch (GameState)
                 {
                     case GameState.ElementsMatch:
                         matches = GetMatches();
@@ -556,36 +497,36 @@ namespace Match_3.GameEntities.Objects
                         selectedElements[1] = null;
                         if (matches.Count == 0)
                         {
-                            gameState = GameState.None;
+                            GameState = GameState.None;
                         }
                         else
                         {
-                            gameState = GameState.ElementsRemove;
+                            GameState = GameState.ElementsRemove;
                         }
                         break;
                     case GameState.ElementsRemove:
-                        gameState = GameState.ElementsSpawn;
+                        GameState = GameState.ElementsSpawn;
                         RemoveMatches(matches);
                         var removedByBombElements = GetRemovedByBonusesElements();
                         matches.AddRange(removedByBombElements);
                         break;
                     case GameState.WaitingForDestroyersAnimationEnd:
                         if (!IsDestroyersIsActive)
-                            gameState = GameState.DestroyersAnimationEnd;
+                            GameState = GameState.DestroyersAnimationEnd;
                         break;
                     case GameState.DestroyersAnimationEnd:
                         var removedByDestroyersElements = GetRemovedByBonusesElements();
                         matches.AddRange(removedByDestroyersElements);
-                        gameState = GameState.ElementsSpawn;
+                        GameState = GameState.ElementsSpawn;
                         break;
                     case GameState.ElementsSpawn:
                         SpawnElements(matches);
-                        gameState = GameState.ElementsDrop;
+                        GameState = GameState.ElementsDrop;
                         break;
                     case GameState.ElementsDrop:
                         DropElements(matches);
                         matches.Clear();
-                        gameState = GameState.ElementsMatch;
+                        GameState = GameState.ElementsMatch;
                         break;
                 }
             }
@@ -597,6 +538,15 @@ namespace Match_3.GameEntities.Objects
             {
                 Destroyers[i].Draw(batch);
             }
+        }
+
+        public void Dispose()
+        {
+            Childrens.Clear();
+            Destroyers.Clear();
+            selectedElements[0] = null;
+            selectedElements[1] = null;
+            cells = null;
         }
     }
 }

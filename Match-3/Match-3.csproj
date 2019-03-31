@@ -54,10 +54,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="ScreenManager\Screens\GameOverScreen.cs" />
     <Compile Include="ScreenManager\Screens\GameScreen.cs" />
     <Compile Include="ScreenManager\Screens\IScreen.cs" />
     <Compile Include="ScreenManager\Screens\MainMenuScreen.cs" />
-    <Compile Include="StageComponents\Actions\ActionsQueue.cs" />
     <Compile Include="StageComponents\Actions\BaseAction.cs" />
     <Compile Include="StageComponents\Actions\MoveAction.cs" />
     <Compile Include="StageComponents\Actions\MoveDistanceAction.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="StageComponents\Stage.cs" />
     <Compile Include="StageComponents\TexturePool.cs" />
     <Compile Include="StageComponents\Actors\Transform.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

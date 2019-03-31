@@ -46,6 +46,8 @@ namespace Match_3.GameEntities
         ElementsDrop,
         WaitingForDestroyersAnimationEnd,
         DestroyersAnimationEnd,
+        WaitingForBombExplosionEnd,
+        BombExplosionEnd,
         None
     }
 

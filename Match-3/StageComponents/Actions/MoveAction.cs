@@ -33,6 +33,7 @@ namespace Match_3.StageComponents.Actions
             calculated = false;
         }
 
+        private Vector2 step;
         public override void Update(Actor actor)
         {
             if (!calculated)
@@ -44,14 +45,15 @@ namespace Match_3.StageComponents.Actions
                 calculated = true;
                 checkX = vector.X != actor.X;
                 checkY = vector.Y != actor.Y;
+                step = new Vector2(direction.X * speed, direction.Y * speed);
             }
-            if(checkX)
-                actor.X += direction.X * speed;
+            if (checkX)
+                actor.X += step.X;
             if(checkY)
-                actor.Y += direction.Y * speed;
-            if (Math.Abs(actor.X - vector.X) < speed)
+                actor.Y += step.Y;
+            if (Math.Abs(actor.X - vector.X) <= Math.Abs(step.X))
                 actor.X = vector.X;
-            if (Math.Abs(actor.Y - vector.Y) < speed)
+            if (Math.Abs(actor.Y - vector.Y) <= Math.Abs(step.Y))
                 actor.Y = vector.Y;
         }
     }

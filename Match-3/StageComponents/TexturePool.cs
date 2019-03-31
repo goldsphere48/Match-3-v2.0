@@ -30,6 +30,7 @@ namespace Match_3.StageComponents
         {
             Load("background");
             Load("gameBackground");
+            Load("gridBackground");
             Load("playButton");
             Load("Line");
             Load("Bomb");
@@ -39,6 +40,14 @@ namespace Match_3.StageComponents
             Load("Gold");
             Load("Brown");
             Load("Destroyer");
+        }
+
+        public static void UnloadContent()
+        {
+            foreach(var pair in pool)
+            {
+                pair.Value.Dispose();
+            }
         }
 
         private static Texture2D Load(string name)

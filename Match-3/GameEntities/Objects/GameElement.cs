@@ -16,8 +16,10 @@ namespace Match_3.GameEntities.Objects
         public BonusType BonusType = BonusType.None;
         public bool IsFalling = false;
         public Vector2 Index = new Vector2();
+        public bool IsNewBonus = false;
         private Bonus bonus;
         private Grid parent;
+        private int animSpeed = 6;
         private static Random random = new Random();
 
         private static ElementColor[] colorsSet = {
@@ -33,6 +35,9 @@ namespace Match_3.GameEntities.Objects
             get => active;
             set
             {
+                if (active && !value)
+                    User.Score++;
+
                 active = value;
                 if (value == false)
                 {
@@ -41,24 +46,27 @@ namespace Match_3.GameEntities.Objects
                     ClearActions();
                     IsFalling = false;
                     StopAnimation();
-                    Color.A = 0;
-                    bonus?.Activate?.Invoke();
+                    bonus?.Activate();
                     bonus = null;
                 }
                 else
                 {
-                    Color.A = 255;
-                    ElementColor = colorsSet[random.Next(colorsSet.Length)];
-                    texture = TexturePool.Get(ElementColor.ToString());
+                    Randomize();
                 }
             }
+        }
+
+        public void Randomize()
+        {
+            ElementColor = colorsSet[random.Next(colorsSet.Length)];
+            texture = TexturePool.Get(ElementColor.ToString());
         }
 
         public GameElement(Grid grid)
         {
             this.parent = grid;
             Active = true;
-            Init(80, 80, 4f);
+            Init(parent.CellSize - 2, parent.CellSize - 2, animSpeed);
         }
 
         public GameElement(ElementColor color, Grid grid)
@@ -66,37 +74,19 @@ namespace Match_3.GameEntities.Objects
             this.parent = grid;
             ElementColor = color;
             texture = TexturePool.Get(ElementColor.ToString());
-            Init(80, 80, 4f);
+            Init(parent.CellSize - 2, parent.CellSize - 2, animSpeed);
         }
 
         public void InitLineBonus(Orientation orientation)
         {
-            bonus = new LineBonus(orientation);
+            bonus = new LineBonus(orientation, parent, this);
             BonusType = BonusType.Line;
-            bonus.Activate = () =>
-            {
-                parent.SpawnDestroyers(orientation, Index);
-            };
         }
 
         public void InitBombBonus()
         {
-            bonus = new BombBonus();
+            bonus = new BombBonus(parent, this);
             BonusType = BonusType.Bomb;
-            bonus.Activate = () =>
-            {
-                Vector2 leftTop = new Vector2(Index.X - 1 < 0 ? 0 : Index.X - 1, Index.Y - 1 < 0 ? 0 : Index.Y - 1);
-                Vector2 rightBottom = new Vector2(Index.X + 1 >= parent.Columns ? parent.Columns - 1 : Index.X + 1, 
-                                                  Index.Y + 1 >= parent.Rows ? parent.Rows - 1 : Index.Y + 1);
-                for(int i = (int)leftTop.X; i <= rightBottom.X; ++i)
-                {
-                    for(int j = (int)leftTop.Y; j <= rightBottom.Y; ++j)
-                    {
-                        if(parent.Cells[i, j] != this && parent.Cells[i, j].Active)
-                            parent.Cells[i, j].Active = false;
-                    }
-                }
-            };
         }
 
         public override void Draw(SpriteBatch batch)
@@ -113,6 +103,5 @@ namespace Match_3.GameEntities.Objects
 
             base.Update(gameTime);
         }
-
     }
 }

@@ -13,12 +13,17 @@ namespace Match_3.GameEntities.Objects
     abstract class Bonus
     {
         protected Texture2D bonusTexture;
-        public Action Activate;
+        protected Grid grid;
+        protected GameElement element;
 
-        public Bonus(string textureName)
+        public Bonus(string textureName, Grid grid, GameElement element)
         {
+            this.grid = grid;
+            this.element = element;
             bonusTexture = TexturePool.Get(textureName);
         }
+
+        public abstract void Activate();
 
         public abstract void Draw(SpriteBatch batch, Vector2 Position, Color Color, Vector2 Origin);
     }

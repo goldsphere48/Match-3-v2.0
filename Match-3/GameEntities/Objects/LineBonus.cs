@@ -34,7 +34,7 @@ namespace Match_3.GameEntities.Objects
             }
         }
 
-        public LineBonus(Orientation orientation) : base("LineBonus")
+        public LineBonus(Orientation orientation, Grid grid, GameElement element) : base("Line", grid, element)
         {
             Orientation = orientation;
             origin = new Vector2(bonusTexture.Width/2, bonusTexture.Height/2);
@@ -43,6 +43,11 @@ namespace Match_3.GameEntities.Objects
         public override void Draw(SpriteBatch batch, Vector2 Position, Color Color, Vector2 Origin)
         {
             batch.Draw(bonusTexture, new Vector2(Position.X + origin.X, Position.Y + origin.Y), new Rectangle(0, 0, bonusTexture.Width, bonusTexture.Height), Color, lineAngle, origin, 1, SpriteEffects.None, 1);
+        }
+
+        public override void Activate()
+        {
+            grid.SpawnDestroyers(orientation, element.Index);
         }
     }
 }

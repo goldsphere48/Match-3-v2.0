@@ -1,1 +1,4 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/User/Github/Match-3/Match-3/Content/Bomb.png","C:/Users/User/Github/Match-3/Match-3/Content/bin/Windows/Bomb.xnb","TextureProcessor","Texture2DContent",3725,25685,0,1159308
+"C:/Users/User/Github/Match-3/Match-3/Content/File.spritefont","C:/Users/User/Github/Match-3/Match-3/Content/bin/Windows/File.xnb","FontDescriptionProcessor","SpriteFontContent",2011,21521,0,1599256
+"C:/Users/User/Github/Match-3/Match-3/Content/Line.png","C:/Users/User/Github/Match-3/Match-3/Content/bin/Windows/Line.xnb","TextureProcessor","Texture2DContent",1530,25685,0,0089944

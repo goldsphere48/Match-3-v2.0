@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/gameOver.png</SourceFile>
-  <SourceTime>2017-05-23T13:52:56.7821266+03:00</SourceTime>
-  <DestFile>C:/Users/Admin/documents/visual studio 2017/Projects/Match-3/Match-3/Content/bin/Windows/gameOver.xnb</DestFile>
-  <DestTime>2017-05-23T14:00:52.3051923+03:00</DestTime>
+  <SourceFile>C:/Users/User/Github/Match-3/Match-3/Content/gameOver.png</SourceFile>
+  <SourceTime>2019-03-31T23:20:39.6764483+10:00</SourceTime>
+  <DestFile>C:/Users/User/Github/Match-3/Match-3/Content/bin/Windows/gameOver.xnb</DestFile>
+  <DestTime>2019-03-31T23:27:44.2902098+10:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-03-01T18:05:36+03:00</ImporterTime>
+  <ImporterTime>2018-12-09T02:35:54+10:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-03-01T18:05:36+03:00</ProcessorTime>
+  <ProcessorTime>2018-12-09T02:35:54+10:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>
